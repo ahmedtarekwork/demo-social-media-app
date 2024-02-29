@@ -42,6 +42,7 @@ function App() {
         ) : (
           <>
             <Route index element={<HomePage />} />
+            <Route path="demo-social-media-app" element={<HomePage />} />
 
             <Route path="profile/:userId" element={<ProfilePage />} />
 
