@@ -21,6 +21,8 @@ import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/profilePage/ProfilePage";
 import SinglePostPage from "./pages/singlePostPage/SinglePostPage";
 
+const homeRoute = "demo-social-media-app";
+
 function App() {
   const dispatch = useDispatch();
 
@@ -42,11 +44,19 @@ function App() {
         ) : (
           <>
             <Route index element={<HomePage />} />
-            <Route path="demo-social-media-app" element={<HomePage />} />
+            <Route path={homeRoute} element={<HomePage />} />
 
-            <Route path="profile/:userId" element={<ProfilePage />} />
+            <Route path={"profile/:userId"} element={<ProfilePage />} />
+            <Route
+              path={homeRoute + "profile/:userId"}
+              element={<ProfilePage />}
+            />
 
-            <Route path="post/:postId" element={<SinglePostPage />} />
+            <Route path={"post/:postId"} element={<SinglePostPage />} />
+            <Route
+              path={homeRoute + "post/:postId"}
+              element={<SinglePostPage />}
+            />
 
             <Route
               path="*"
