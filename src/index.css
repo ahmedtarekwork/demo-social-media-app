@@ -166,8 +166,16 @@ input {
   transition: 0.3s;
   outline: none;
 
+  &::placeholder {
+    transition: opacity 0.3s;
+  }
+
   &:focus {
     border-color: var(--light);
+
+    &::placeholder {
+      opacity: 0;
+    }
   }
 
   &.red {
@@ -325,6 +333,7 @@ main {
   & .left-side {
     color: inherit;
     width: fit-content;
+    flex-wrap: wrap;
   }
 }
 
@@ -333,6 +342,10 @@ main {
   height: 30px;
   border: 1px solid rgb(204, 204, 204);
   border-radius: 50%;
+}
+
+.post-owner-names {
+  word-break: break-word;
 }
 
 .post-owner-username {
@@ -376,6 +389,27 @@ main {
   }
 }
 
+@media (max-width: 285px) {
+  .add-comment-form {
+    flex-direction: column;
+    border: 1px solid var(--main);
+    padding: 5px;
+    border-radius: 4px;
+
+    & input {
+      border-right: 1px solid var(--dark);
+      border-radius: 4px 4px 0 0;
+      border-bottom: 0;
+    }
+
+    & button {
+      border-radius: 0 0 4px 4px;
+      border-top: 0;
+      padding-block: 7px;
+    }
+  }
+}
+
 .comments-list {
   margin-block: 10px;
 }
@@ -386,6 +420,8 @@ main {
 
   & .comment-body {
     margin-top: 10px;
+    padding-top: 5px;
+    border-top: 1px solid var(--dark);
   }
 
   &:nth-of-type(odd) {
@@ -491,6 +527,20 @@ main {
   color: #000;
   text-align: center;
   padding: 10px;
+
+  & .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    flex-wrap: wrap;
+
+    & a {
+      color: currentColor;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+  }
 }
 
 /* profile page */

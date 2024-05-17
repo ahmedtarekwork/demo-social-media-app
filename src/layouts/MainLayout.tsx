@@ -5,11 +5,18 @@ const MainLayout = () => {
   return (
     <>
       <Header />
+
       <main>
         <div className="container">{<Outlet />}</div>
       </main>
+
       <footer className="main-site-footer">
-        <div className="container">this is the footer for now</div>
+        <div className="container">
+          made by{" "}
+          <a target="_blank" href="https://github.com/ahmedtarekwork">
+            Ahmed Tarek
+          </a>
+        </div>
       </footer>
     </>
   );
