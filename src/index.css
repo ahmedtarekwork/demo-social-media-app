@@ -199,6 +199,11 @@ textarea {
     align-items: center;
   }
 
+  & .left-slice {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
   & .left-slice,
   & .auth-btns-holder,
   & nav {
@@ -490,16 +495,27 @@ main {
 
 /* profile page */
 .personal-info {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 20px;
   font-size: 20px;
 
   margin-bottom: 40px;
 }
 
+& .num-of-posts,
+& .num-of-comments {
+  font-size: 30px;
+}
+
 .profile-img {
+  display: grid;
+  place-content: center;
+
   & img {
+    max-width: 100%;
     width: 200px;
   }
 
@@ -512,7 +528,23 @@ main {
   margin-bottom: 15px;
 }
 
-.num-of-posts,
-.num-of-comments {
-  font-size: 30px;
+@media (max-width: 360px) {
+  .personal-info {
+    font-size: 16px;
+  }
+
+  & .num-of-posts,
+  & .num-of-comments {
+    font-size: 20px;
+  }
+
+  .user-posts h2 {
+    font-size: 20px;
+  }
+}
+@media (max-width: 200px) {
+  .personal-info {
+    font-size: 14px;
+    grid-template-columns: unset;
+  }
 }
