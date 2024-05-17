@@ -9,7 +9,7 @@ import {
 
   // types
   RefType,
-} from "../modal/Modal";
+} from "../Modal";
 import { useEffect, useRef } from "react";
 
 // icons
@@ -30,7 +30,7 @@ import {
   GoToProfile,
   TMessageRef,
 } from "./Post";
-import { TPost, TUser } from "../../interfaces";
+import { TPost, TUser } from "../../types";
 
 type TypePostOwner = {
   type: "post";

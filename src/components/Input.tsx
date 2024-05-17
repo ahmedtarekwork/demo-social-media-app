@@ -12,7 +12,7 @@ import {
   // Dispatch,
 } from "react";
 
-import { TInput } from "../interfaces";
+import { TInput } from "../types";
 
 export type InputRefType = {
   input: HTMLInputElement | HTMLTextAreaElement | null;

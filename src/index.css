@@ -101,14 +101,44 @@ button {
   color: var(--dark);
 }
 
+.scroll-to-top-btn {
+  --right-offset: 40px;
+
+  position: fixed;
+  bottom: 40px;
+  right: var(--right-offset);
+  background-color: var(--main);
+  color: #fff;
+  border: 2px solid var(--main);
+  border-radius: 4px;
+  padding: 5px;
+  transition: 0.3s;
+  display: grid;
+  place-content: center;
+  translate: calc(100% + var(--right-offset));
+
+  &:hover {
+    background-color: var(--dark);
+  }
+
+  &.active {
+    translate: 0;
+  }
+
+  & svg {
+    width: 30px;
+    fill: #fff;
+  }
+}
+
+/* end btns */
+
 .section {
   background: #fff;
   padding: 10px;
   border-radius: 4px;
   box-shadow: 5px 5px 10px #999999a9;
 }
-
-/* end btns */
 
 /* inputs */
 
@@ -178,6 +208,20 @@ textarea {
 
     & > * {
       align-self: stretch;
+    }
+  }
+}
+
+@media (max-width: 530px) {
+  .app-header {
+    & h1 {
+      font-size: 25px;
+      text-align: center;
+    }
+
+    & .container {
+      flex-direction: column;
+      gap: 10px;
     }
   }
 }

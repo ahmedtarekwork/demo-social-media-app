@@ -1,6 +1,6 @@
 import { FaUserAlt } from "react-icons/fa";
 import { memo } from "react";
-import { TUser } from "../../interfaces";
+import { TUser } from "../../types";
 
 const PersonalInfoComponent = ({
   profile_image,

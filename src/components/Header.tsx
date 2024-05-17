@@ -14,7 +14,7 @@ import {
   // types
   RefType,
   ModalProps,
-} from "./modal/Modal";
+} from "./Modal";
 
 import {
   TopMessage,
@@ -42,7 +42,7 @@ import { setUser } from "../store/features/userSlice";
 import { useSelector } from "react-redux";
 
 // types
-import { TInput } from "../interfaces";
+import { TInput } from "../types";
 import { RootState } from "../store/store";
 
 // constants
@@ -426,12 +426,11 @@ const Header = () => {
       <TopMessage ref={messageRef} />
       <Modal ref={modalRef} />
 
-      {/* => todo: change the structure of the nav <= */}
       <header className="app-header">
         <div className="container">
           <div className="left-slice">
             <Link to="/" className="header-logo">
-              <h1>RTK_Query</h1>
+              <h1>Social Media App</h1>
             </Link>
 
             {user && (

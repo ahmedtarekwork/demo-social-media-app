@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // types
-import { TComment, TPost, TUser } from "../../interfaces";
+import { TComment, TPost, TUser } from "../../types";
 
 type TGetPostsResponse = {
   meta: Record<string, unknown>;

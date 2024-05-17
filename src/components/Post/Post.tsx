@@ -2,7 +2,7 @@
 import { TopMessageRefType } from "../TopMessage";
 
 // interfaces & types
-import { TPost } from "../../interfaces";
+import { TPost } from "../../types";
 import { Link } from "react-router-dom";
 import Owner, {
   // types

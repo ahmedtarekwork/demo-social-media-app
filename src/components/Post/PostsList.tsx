@@ -1,4 +1,4 @@
-import { TPost } from "../../interfaces";
+import { TPost } from "../../types";
 import Post from "./Post";
 import { TopMessage, TopMessageRefType } from "../TopMessage";
 import {

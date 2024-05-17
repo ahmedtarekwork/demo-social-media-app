@@ -1,4 +1,4 @@
-import { TInput } from "./interfaces";
+import { TInput } from "./types";
 
 export const postModalInputs: TInput[] = [
   {
