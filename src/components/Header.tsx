@@ -423,7 +423,6 @@ const Header = () => {
             {user && (
               <nav className="d-flex gap-1 align-items-center">
                 <button
-                  data-tooltip-text="add post"
                   className="btn btn-outline-success"
                   onClick={() => {
                     setModalDataAuto("addPost");
@@ -433,7 +432,6 @@ const Header = () => {
                   +
                 </button>
                 <Link
-                  data-tooltip-text="your profile"
                   to={"/profile/" + user.id}
                   className="btn btn-outline-success"
                 >

@@ -29,51 +29,6 @@ li {
   list-style: none;
 }
 
-/* tooltip */
-[data-tooltip-text] {
-  --arrow-width: 4px;
-
-  position: relative;
-
-  &::before,
-  &::after {
-    position: absolute;
-    left: 50%;
-    translate: -50%;
-    transition: 0.3s;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* the arrow */
-  &::before {
-    content: "";
-    border: var(--arrow-width) solid;
-    border-color: transparent transparent rgb(14, 11, 49);
-    top: 100%;
-  }
-  /* the content of tooltip */
-  &::after {
-    border-radius: 4px;
-    content: attr(data-tooltip-text);
-    width: max-content;
-    height: max-content;
-    word-break: break-word;
-    background-color: rgb(14, 11, 49);
-    top: calc(100% + (var(--arrow-width) * 2));
-    color: #fff;
-    font-size: 13px;
-    padding: 4px;
-  }
-
-  &:hover {
-    &::before,
-    &::after {
-      opacity: 1;
-    }
-  }
-}
-
 /* btns */
 button {
   border: 0;
