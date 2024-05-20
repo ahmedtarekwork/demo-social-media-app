@@ -1,15 +1,14 @@
 import {
-  ChangeEvent,
-  ComponentProps,
   useId,
   useState,
   useEffect,
   forwardRef,
-  Ref,
   useImperativeHandle,
   createRef,
-  // SetStateAction,
-  // Dispatch,
+  memo,
+  type ChangeEvent,
+  type ComponentProps,
+  type Ref,
 } from "react";
 
 import { TInput } from "../types";
@@ -20,75 +19,79 @@ export type InputRefType = {
   val: string;
 };
 
-// forwardRef<InputRefType, TInput>
-const Input = forwardRef(
-  (
-    {
-      label,
-      type,
-      required,
-      name,
-      controlled,
-      makeOnceStateChanges,
-      setDefaultValue,
-      ...attr
-    }: TInput,
-    ref: Ref<InputRefType>
-  ) => {
-    const id = useId();
-
-    const [value, setValue] = useState(setDefaultValue || "");
-    const inputRef = createRef<HTMLInputElement | HTMLTextAreaElement>();
-
-    useImperativeHandle(
-      ref,
-      () => ({
-        input: inputRef.current,
+const Input = memo(
+  forwardRef(
+    (
+      {
+        label,
+        type,
+        required,
         name,
-        val: value,
-      }),
-      [inputRef, value]
-    );
+        controlled,
+        makeOnceStateChanges,
+        setDefaultValue,
+        ...attr
+      }: TInput,
+      ref: Ref<InputRefType>
+    ) => {
+      const id = useId();
 
-    useEffect(() => {
-      makeOnceStateChanges?.(value);
-    }, [value]);
+      const [value, setValue] = useState(setDefaultValue || "");
+      const inputRef = createRef<HTMLInputElement | HTMLTextAreaElement>();
 
-    const props = {
-      ref: inputRef,
-      "data-required": required,
-      name,
-      id,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any;
+      useImperativeHandle(
+        ref,
+        () => ({
+          input: inputRef.current,
+          name,
+          val: value,
+        }),
+        [inputRef, value]
+      );
 
-    if (controlled) {
-      if (type !== "file") {
-        props.value = value;
-        props.onChange = (e: ChangeEvent<HTMLInputElement>) => {
-          setValue(e.currentTarget.value);
-        };
+      useEffect(() => {
+        makeOnceStateChanges?.(value);
+      }, [value]);
+
+      const props = {
+        ref: inputRef,
+        "data-required": required,
+        name,
+        id,
+        className: `${attr.className} form-control shadow-none mt-1 ${
+          type === "textarea" ? "d-block" : ""
+        }`,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
+
+      if (controlled) {
+        if (type !== "file") {
+          props.value = value;
+          props.onChange = (e: ChangeEvent<HTMLInputElement>) => {
+            setValue(e.currentTarget.value);
+          };
+        }
       }
-    }
 
-    return (
-      <div className="input-holder" key={id}>
-        {label && <label htmlFor={id}>{label}</label>}
-        {type === "textarea" ? (
-          <textarea
-            {...props}
-            {...(attr as ComponentProps<"textarea">)}
-          ></textarea>
-        ) : (
-          <input
-            {...props}
-            type={type}
-            {...(attr as ComponentProps<"input">)}
-          />
-        )}
-      </div>
-    );
-  }
+      return (
+        <div className="input-holder" key={id}>
+          {label && <label htmlFor={id}>{label}</label>}
+          {type === "textarea" ? (
+            <textarea
+              {...(attr as ComponentProps<"textarea">)}
+              {...props}
+            ></textarea>
+          ) : (
+            <input
+              type={type}
+              {...(attr as ComponentProps<"input">)}
+              {...props}
+            />
+          )}
+        </div>
+      );
+    }
+  )
 );
 
 export default Input;

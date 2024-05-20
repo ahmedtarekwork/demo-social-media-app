@@ -1,33 +1,36 @@
 import {
-  FormEvent,
+  useState,
+  useEffect,
+
+  // refs
+  useRef,
   forwardRef,
   useImperativeHandle,
-  useRef,
-  useState,
-  Dispatch,
-  SetStateAction,
-  memo,
-  useEffect,
   createRef,
-  RefObject,
-} from "react";
 
+  // optimization
+  memo,
+
+  // types
+  type FormEvent,
+  type Dispatch,
+  type SetStateAction,
+  type RefObject,
+} from "react";
 import { createPortal } from "react-dom";
 
-import { nanoid } from "@reduxjs/toolkit";
-
 // components
-import { TopMessage, TopMessageRefType } from "./TopMessage";
-import Input, {
-  // types
-  InputRefType,
-} from "./Input";
-
-// imported types
-import { TInput } from "../types";
+import { TopMessage, type TopMessageRefType } from "./TopMessage";
+import Input, { type InputRefType } from "./Input";
 
 // hooks
-import useModalForm, { TUseModalForm } from "../hooks/useModalForm";
+import useModalForm, { type TUseModalForm } from "../hooks/useModalForm";
+
+// utils
+import { nanoid } from "@reduxjs/toolkit";
+
+// types
+import type { TInput } from "../types";
 
 // types \\
 
@@ -50,21 +53,24 @@ type MakeWhenStateChange = (
 export type ModalProps = {
   inputs: TInput[];
   submitBtnContent: string;
+  title: string;
   submitFunc: (e: FormEvent) => void;
   makeOnceOpen?: MakeWhenStateChange;
   makeOnceDataChange?: MakeWhenStateChange;
 };
 
-const ModalComponent = memo(
+const Modal = memo(
   forwardRef<RefType>((_, ref) => {
+    // states
     const [showModal, setShowModal] = useState(false);
-
     const [modalData, setModalData] = useState<ModalProps>({
       inputs: [],
+      title: "",
       submitBtnContent: "",
       submitFunc: () => {},
     });
 
+    // refs
     const modalRef = useRef<HTMLDivElement>(null);
     const overlayRef = useRef<HTMLDivElement>(null);
     const formRef = useRef<HTMLFormElement>(null);
@@ -107,6 +113,7 @@ const ModalComponent = memo(
       [inputsRef]
     );
 
+    // useEffects
     useEffect(() => {
       if (showModal) {
         modalData.makeOnceOpen?.(
@@ -114,6 +121,18 @@ const ModalComponent = memo(
           formRef.current,
           submitBtnRef.current
         );
+
+        const closeFn = () => toggleModal(false);
+
+        const overlay = overlayRef.current;
+
+        window.addEventListener("keydown", closeFn);
+        overlay?.addEventListener("click", closeFn);
+
+        return () => {
+          window.removeEventListener("keydown", closeFn);
+          overlay?.removeEventListener("click", closeFn);
+        };
       }
     }, [showModal]);
 
@@ -129,13 +148,19 @@ const ModalComponent = memo(
       showModal &&
       createPortal(
         <>
-          <div className="app-modal" ref={modalRef}>
-            <button
-              className="app-modal-close-btn red-btn"
-              onClick={() => toggleModal(false)}
-            >
-              X
-            </button>
+          <div
+            className="app-modal position-fixed start-50 bg-white p-2 rounded w-50"
+            ref={modalRef}
+          >
+            <div className="d-flex align-items-center flex-wrap gap-1 border-bottom border-success mb-3">
+              <p className="fw-bold h4 text-success">{modalData.title}</p>
+              <button
+                className="btn btn-danger ms-auto d-block fw-bold mb-3"
+                onClick={() => toggleModal(false)}
+              >
+                X
+              </button>
+            </div>
 
             <form
               ref={formRef}
@@ -173,12 +198,19 @@ const ModalComponent = memo(
                 );
               })}
 
-              <button ref={submitBtnRef} className="app-modal-submit-btn btn">
+              <button
+                ref={submitBtnRef}
+                className="w-100 btn btn-success shadow-none"
+              >
                 {modalData.submitBtnContent}
               </button>
             </form>
           </div>
-          <div className="app-modal-overlay" ref={overlayRef}></div>
+
+          <div
+            className="app-modal-overlay position-fixed bg-black bg-opacity-50"
+            ref={overlayRef}
+          ></div>
 
           <TopMessage ref={messageRef} />
         </>,
@@ -187,4 +219,4 @@ const ModalComponent = memo(
     );
   })
 );
-export const Modal = ModalComponent;
+export default Modal;

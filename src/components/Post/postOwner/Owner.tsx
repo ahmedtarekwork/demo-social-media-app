@@ -1,36 +1,27 @@
+// react
+import { useEffect, useRef } from "react";
+
 // react-router
 import { Link } from "react-router-dom";
 
 // constants
-import { postModalInputs } from "../../constants";
+import { postModalInputs } from "../../../constants";
 
-import {
-  Modal,
-
-  // types
-  RefType,
-} from "../Modal";
-import { useEffect, useRef } from "react";
-
-// icons
-import { FaUserAlt } from "react-icons/fa";
+// components
+import Modal, { type RefType } from "../../Modal";
+import PostOwnerLeftSide from "./PostOwnerLeftSide";
 
 // react-redux
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import useSelector from "../../../hooks/useSelector";
 // rtk_query
 import {
   useDeletePostMutation,
   useEditPostMutation,
-} from "../../store/api/api";
+} from "../../../store/api/api";
 
 // types
-import {
-  // types
-  GoToProfile,
-  TMessageRef,
-} from "./Post";
-import { TPost, TUser } from "../../types";
+import type { GoToProfile, TMessageRef } from "../Post";
+import type { TPost, TUser } from "../../../types";
 
 type TypePostOwner = {
   type: "post";
@@ -62,28 +53,9 @@ const Owner = ({
 }: PostOwnerProps) => {
   const modalRef = useRef<RefType>(null);
 
-  const { user } = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state) => state.user);
 
   const { type } = ownerType;
-
-  const LeftSide = () => {
-    return (
-      <>
-        <div className="post-owner-img">
-          {typeof profile_image === "string" ? (
-            <img src={profile_image as string} alt="post-owner-image" />
-          ) : (
-            <FaUserAlt />
-          )}
-        </div>
-
-        <div className="post-owner-names">
-          <strong className="post-owner-name">{name}</strong>
-          <p className="post-owner-username">#{username}</p>
-        </div>
-      </>
-    );
-  };
 
   const [
     deletePost,
@@ -109,7 +81,7 @@ const Owner = ({
 
   const handleDeletePost = () => deletePost(ownerId);
 
-  const handleEditPost = () => {
+  const submitPostChanges = () => {
     const form = modalRef.current?.form();
 
     if (form && type === "post") {
@@ -217,28 +189,37 @@ const Owner = ({
 
   return (
     <>
-      <div className="post-owner">
+      <div className="post-owner d-flex gap-3 align-items-center justify-content-between">
         {goToProfilePage ? (
           <Link
-            className="left-side"
+            className="text-black flex-wrap d-flex gap-2 align-items-center"
             relative="path"
             to={`/profile/${ownerId}`}
           >
-            <LeftSide />
+            <PostOwnerLeftSide
+              profile_image={profile_image}
+              name={name}
+              username={username}
+            />
           </Link>
         ) : (
-          <div className="left-side">
-            <LeftSide />
+          <div className=" d-flex gap-2 align-items-center">
+            <PostOwnerLeftSide
+              profile_image={profile_image}
+              name={name}
+              username={username}
+            />
           </div>
         )}
 
         {type === "comment" || !user || user.id !== ownerId ? null : (
-          <div className="right-side">
-            <button onClick={handleDeletePost} className="red-btn">
+          <div className="d-flex gap-2 align-items-center post-owner-right-side-btns-holder flex-wrap">
+            <button onClick={handleDeletePost} className="btn btn-danger">
               {deleteLoading ? "Loading..." : "delete"}
             </button>
 
             <button
+              className="btn btn-success"
               onClick={() => {
                 const inputs = postModalInputs
                   .slice()
@@ -275,13 +256,13 @@ const Owner = ({
                   });
 
                 modalRef.current?.setModalData({
+                  title: "Edit Post Data",
                   inputs,
                   submitBtnContent: "Edit Post",
-                  submitFunc: handleEditPost,
+                  submitFunc: submitPostChanges,
                 });
                 modalRef.current?.openModal();
               }}
-              className="btn"
             >
               edit
             </button>

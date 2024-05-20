@@ -13,7 +13,6 @@ type SuccessAuthResponse = { user: TUser; token: string };
 
 export type loginData = { username: string; password: string };
 
-// <resType, propsType>
 export const apiSlice = createApi({
   reducerPath: "tarmeezApi",
   baseQuery: fetchBaseQuery({ baseUrl: "https://tarmeezacademy.com/api/v1/" }),

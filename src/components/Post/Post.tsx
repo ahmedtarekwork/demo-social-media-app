@@ -4,10 +4,7 @@ import { TopMessageRefType } from "../TopMessage";
 // interfaces & types
 import { TPost } from "../../types";
 import { Link } from "react-router-dom";
-import Owner, {
-  // types
-  FinalOwnerData,
-} from "./Owner";
+import Owner, { type FinalOwnerData } from "./postOwner/Owner";
 
 // types \\
 
@@ -43,7 +40,11 @@ const Post = ({
   });
 
   return (
-    <li className={`post-card ${type === "single" ? "" : "section"}`}>
+    <li
+      className={`post-card${
+        type === "single" ? "" : " card p-3 shadow border-0"
+      }`}
+    >
       <Owner
         {...ownerProps({
           type: "post",
@@ -56,18 +57,19 @@ const Post = ({
       />
 
       {typeof image === "string" && (
-        <div className="post-img">
-          <img src={image} alt="post-image" />
+        <div className="d-flex align-items-center justify-content-center">
+          <img className="img-fluid" src={image} alt="post-image" />
         </div>
       )}
 
-      <h4 className="post-title">{title}</h4>
+      <h4>{title}</h4>
+      <p>{body}</p>
+      <p className="posted-from-time-ago text-muted">{created_at}</p>
 
-      <p className="post-body">{body}</p>
-
-      <p className="posted-from-time-ago">{created_at}</p>
-
-      <Link to={`/post/${postId}`} className="comments-count">
+      <Link
+        to={`/post/${postId}`}
+        className="py-3 border-top border-bottom border-secondary w-100 text-black"
+      >
         ({comments_count}) comments
       </Link>
     </li>

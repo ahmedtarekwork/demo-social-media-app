@@ -1,21 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 
-import PostsList, { PostsListRefType } from "../components/Post/PostsList";
+// components
+import PostsList, { type PostsListRefType } from "../components/Post/PostsList";
+import ScrollToTopBtn from "../components/ScrollToTopBtn";
 
 import { getPostsLazy } from "../store/api/api";
 
-import { TPost } from "../types";
-
-// icons
-const arrowIcon = (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-    <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z" />
-  </svg>
-);
+import type { TPost } from "../types";
 
 const HomePage = () => {
   const postsListRef = useRef<PostsListRefType>(null);
-  const scrollTopBtnRef = useRef<HTMLButtonElement>(null);
+  // const scrollTopBtnRef = useRef<HTMLButtonElement>(null);
 
   const [getPosts, { isLoading, isError, data }] = getPostsLazy();
 
@@ -72,8 +67,6 @@ const HomePage = () => {
           postsListRef.current?.setLoading(true);
         }
       }
-
-      scrollTopBtnRef.current?.classList.toggle("active", scrollY >= 300);
     };
 
     window.addEventListener("scroll", scrollFn);
@@ -84,22 +77,18 @@ const HomePage = () => {
 
   return (
     <div>
-      <ul className="posts-list">
-        <PostsList
-          ref={postsListRef}
-          isLoading={isLoading}
-          isError={isError}
-          postsList={allPosts}
-        />
-      </ul>
+      <h1 className="home-page-title pb-1 mb-3 text-success border-bottom border-success border-2">
+        Home Page
+      </h1>
 
-      <button
-        onClick={() => scroll({ behavior: "smooth", top: 0 })}
-        ref={scrollTopBtnRef}
-        className="scroll-to-top-btn"
-      >
-        {arrowIcon}
-      </button>
+      <PostsList
+        ref={postsListRef}
+        isLoading={isLoading}
+        isError={isError}
+        postsList={allPosts}
+      />
+
+      <ScrollToTopBtn />
     </div>
   );
 };

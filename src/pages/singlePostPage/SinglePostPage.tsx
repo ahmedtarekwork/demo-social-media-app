@@ -2,8 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 
 // react-redux
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import useSelector from "../../hooks/useSelector";
 
 // rtk_query
 import { getSinglePostLazy } from "../../store/api/api";
@@ -11,19 +10,17 @@ import { getSinglePostLazy } from "../../store/api/api";
 // components
 import {
   TopMessage,
-
-  // types
-  TopMessageRefType,
+  type TopMessageRefType,
 } from "../../components/TopMessage";
 import Post from "../../components/Post/Post";
-import Owner from "../../components/Post/Owner";
+import Owner from "../../components/Post/postOwner/Owner";
 import AddCommentForm from "./AddCommentForm";
 
 const SinglePostPage = () => {
   const { postId } = useParams();
   const messageRef = useRef<TopMessageRefType>(null);
 
-  const { user } = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state) => state.user);
 
   const [
     trigger,
@@ -53,7 +50,7 @@ const SinglePostPage = () => {
     return (
       <>
         <h2>No post with this Id: {postId}</h2>
-        <Link to="/" className="btn">
+        <Link to="/" className="btn btn-success">
           Go To Home
         </Link>
       </>
@@ -62,7 +59,7 @@ const SinglePostPage = () => {
   if (postData?.data) {
     return (
       <>
-        <section className="section">
+        <section className="card border-0 p-3 shadow">
           <Post
             type="single"
             goToProfilePage={true}
@@ -83,7 +80,7 @@ const SinglePostPage = () => {
             </strong>
           )}
 
-          <ul className="comments-list">
+          <ul className="my-3">
             {postData.data.comments?.map(
               ({
                 id: commentId,
@@ -91,7 +88,7 @@ const SinglePostPage = () => {
                 author: { name, username, profile_image, id },
               }) => {
                 return (
-                  <li className="comment section" key={commentId}>
+                  <li className="comment p-2 card shadow-sm" key={commentId}>
                     <Owner
                       messageRef={null}
                       goToProfilePage={true}
@@ -102,7 +99,9 @@ const SinglePostPage = () => {
                       profile_image={profile_image}
                     />
 
-                    <div className="comment-body">{body}</div>
+                    <div className="mt-1 pt-2 border-top border-success">
+                      {body}
+                    </div>
                   </li>
                 );
               }

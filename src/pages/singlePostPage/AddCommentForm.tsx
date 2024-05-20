@@ -72,8 +72,12 @@ const AddCommentForm = ({ postId, messageRef }: Props) => {
   ]);
 
   return (
-    <form className="add-comment-form" onSubmit={handleAddingComment}>
+    <form
+      className="add-comment-form mt-3 d-flex"
+      onSubmit={handleAddingComment}
+    >
       <input
+        className="form-control shadow-none"
         ref={inputRef}
         type="text"
         name="body"
@@ -83,7 +87,7 @@ const AddCommentForm = ({ postId, messageRef }: Props) => {
 
       <button
         ref={btnRef}
-        className="btn"
+        className="btn btn-success border-0"
         disabled={commentStatus !== "uninitialized" ? commentLoading : false}
       >
         add

@@ -2,7 +2,6 @@ import {
   ReactNode,
   forwardRef,
   useRef,
-  Ref,
   useImperativeHandle,
   useState,
 } from "react";
@@ -24,7 +23,7 @@ export type TopMessageRefType = {
 type toggleMessageFuncParamType = { open: false } | ({ open: true } & openMsg);
 
 // the component
-const TopMessageComponent = (_: unknown, ref: Ref<TopMessageRefType>) => {
+const TopMessageComponent = forwardRef<TopMessageRefType, unknown>((_, ref) => {
   // refs
   const messageRef = useRef<HTMLDivElement>(null);
 
@@ -82,12 +81,15 @@ const TopMessageComponent = (_: unknown, ref: Ref<TopMessageRefType>) => {
     createPortal(
       <div
         ref={messageRef}
-        className={"top-message " + (messageData.clr || "")}
+        className={`top-message alert position-fixed start-50${
+          (messageData.clr === "green" ? " alert-success" : " alert-danger") ||
+          ""
+        }`}
       >
         {messageData.content}
       </div>,
       document.body
     )
   );
-};
-export const TopMessage = forwardRef<TopMessageRefType>(TopMessageComponent);
+});
+export const TopMessage = TopMessageComponent;

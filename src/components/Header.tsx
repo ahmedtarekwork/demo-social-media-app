@@ -7,21 +7,9 @@ import { Link } from "react-router-dom";
 import { FaUserAlt } from "react-icons/fa";
 
 // components
-import {
-  // component
-  Modal,
+import Modal, { type RefType, type ModalProps } from "./Modal";
 
-  // types
-  RefType,
-  ModalProps,
-} from "./Modal";
-
-import {
-  TopMessage,
-
-  // types
-  TopMessageRefType,
-} from "./TopMessage";
+import { TopMessage, type TopMessageRefType } from "./TopMessage";
 
 // rtk_Query
 import {
@@ -33,17 +21,16 @@ import {
   useMakePostMutation,
 
   // types
-  loginData,
+  type loginData,
 } from "../store/api/api";
 
 // react-redux
-import useDispatch from "../store/useDispatch";
+import useDispatch from "../hooks/useDispatch";
+import useSelector from "../hooks/useSelector";
 import { setUser } from "../store/features/userSlice";
-import { useSelector } from "react-redux";
 
 // types
-import { TInput } from "../types";
-import { RootState } from "../store/store";
+import type { TInput } from "../types";
 
 // constants
 import { postModalInputs } from "../constants";
@@ -118,7 +105,7 @@ const Header = () => {
   const dispatch = useDispatch();
 
   // redux store states
-  const { user } = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state) => state.user);
 
   // #endregion react-redux
 
@@ -132,6 +119,7 @@ const Header = () => {
       inputs: loginModalInputs,
       submitBtnContent: loginLoading ? "Loading..." : "Login",
       submitFunc: handleLogin,
+      title: "Login",
     };
 
     const registerModalData: ModalProps = {
@@ -153,12 +141,14 @@ const Header = () => {
       ],
       submitBtnContent: registerLoading ? "loading..." : "Register",
       submitFunc: handleResister,
+      title: "Register",
     };
 
     const addPostData: ModalProps = {
       inputs: postModalInputs,
       submitBtnContent: postLoading ? "Loading..." : "Add Post",
       submitFunc: handleAddPost,
+      title: "Add New Post",
     };
 
     if (modalRef.current?.submitBtn()) {
@@ -341,7 +331,7 @@ const Header = () => {
         dispatch(setUser(registerData.user));
       }
     }
-  }, [registerStatus, registerData]);
+  }, [registerStatus, registerData, dispatch]);
 
   // #endregion for register
 
@@ -383,7 +373,7 @@ const Header = () => {
         dispatch(setUser(loginData.user));
       }
     }
-  }, [loginStatus, loginData]);
+  }, [loginStatus, loginData, dispatch]);
   // #endregion for login
 
   // #region for make post
@@ -423,21 +413,18 @@ const Header = () => {
 
   return (
     <>
-      <TopMessage ref={messageRef} />
-      <Modal ref={modalRef} />
-
-      <header className="app-header">
-        <div className="container">
-          <div className="left-slice">
-            <Link to="/" className="header-logo">
-              <h1>Social Media App</h1>
+      <header className="bg-white py-4">
+        <div className="container d-flex justify-content-between align-items-center gap-2 flex-column flex-sm-row">
+          <div className="left-slice d-flex justify-content-center align-items-center gap-2 flex-wrap">
+            <Link to="/" className="header-logo text-success">
+              <h1 className="text-center h2 m-0">Social Media App</h1>
             </Link>
 
             {user && (
-              <nav className="app-header-nav">
+              <nav className="d-flex gap-1 align-items-center">
                 <button
                   data-tooltip-text="add post"
-                  className="add-post-btn btn"
+                  className="btn btn-outline-success"
                   onClick={() => {
                     setModalDataAuto("addPost");
                     modalRef.current?.openModal();
@@ -447,8 +434,8 @@ const Header = () => {
                 </button>
                 <Link
                   data-tooltip-text="your profile"
-                  to={"profile/" + user.id}
-                  className="btn"
+                  to={"/profile/" + user.id}
+                  className="btn btn-outline-success"
                 >
                   <FaUserAlt />
                 </Link>
@@ -456,11 +443,14 @@ const Header = () => {
             )}
           </div>
 
-          <div className="auth-btns-holder">
+          <div className="d-flex align-items-center gap-2 flex-wrap justify-content-center">
             {!user ? (
               <>
                 <button
-                  className="btn"
+                  style={{
+                    flex: 1,
+                  }}
+                  className="btn btn-outline-success"
                   id="login-btn"
                   onClick={() => {
                     setModalDataAuto("login");
@@ -470,7 +460,10 @@ const Header = () => {
                   Login
                 </button>
                 <button
-                  className="btn"
+                  style={{
+                    flex: 1,
+                  }}
+                  className="btn btn-outline-success"
                   id="register-btn"
                   onClick={() => {
                     setModalDataAuto("register");
@@ -481,13 +474,16 @@ const Header = () => {
                 </button>
               </>
             ) : (
-              <button className="red-btn" onClick={handleLogout}>
+              <button className="btn btn-outline-danger" onClick={handleLogout}>
                 Logout
               </button>
             )}
           </div>
         </div>
       </header>
+
+      <TopMessage ref={messageRef} />
+      <Modal ref={modalRef} />
     </>
   );
 };

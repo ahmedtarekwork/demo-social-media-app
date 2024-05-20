@@ -10,6 +10,7 @@ import { Link, useParams } from "react-router-dom";
 
 // rek_query
 import { getUserLazy, getUserPostsLazy } from "../../store/api/api";
+import ScrollToTopBtn from "../../components/ScrollToTopBtn";
 
 const ProfilePage = () => {
   const { userId } = useParams();
@@ -46,7 +47,7 @@ const ProfilePage = () => {
       <h2>
         no user found!
         <br />
-        <Link to="/" className="links">
+        <Link to="/" className="btn btn-success">
           Go Home
         </Link>
       </h2>
@@ -71,7 +72,9 @@ const ProfilePage = () => {
       <PersonalInfo {...userData.data}></PersonalInfo>
 
       <section className="user-posts">
-        {posts?.data.length ? <h2>{username}'s Posts</h2> : null}
+        {posts?.data.length ? (
+          <h2 className="mb-3">{username}'s Posts</h2>
+        ) : null}
 
         <PostsList
           postsList={posts?.data || []}
@@ -83,6 +86,8 @@ const ProfilePage = () => {
           }
           goToProfilePage={false}
         />
+
+        <ScrollToTopBtn />
       </section>
     </>
   );
