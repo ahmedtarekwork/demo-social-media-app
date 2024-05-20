@@ -40,7 +40,7 @@ const ProfilePage = () => {
       trigger(userId);
       triggerPosts(userId);
     }
-  }, []);
+  }, [userId]);
 
   if (!userId) {
     return (
