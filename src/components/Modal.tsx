@@ -122,16 +122,19 @@ const Modal = memo(
           submitBtnRef.current
         );
 
-        const closeFn = () => toggleModal(false);
+        const keyboardFn = (e: KeyboardEvent) => {
+          if (e.key.toLowerCase() === "escape") toggleModal(false);
+        };
+        const clickFn = () => toggleModal(false);
 
         const overlay = overlayRef.current;
 
-        window.addEventListener("keydown", closeFn);
-        overlay?.addEventListener("click", closeFn);
+        window.addEventListener("keydown", keyboardFn);
+        overlay?.addEventListener("click", clickFn);
 
         return () => {
-          window.removeEventListener("keydown", closeFn);
-          overlay?.removeEventListener("click", closeFn);
+          window.removeEventListener("keydown", keyboardFn);
+          overlay?.removeEventListener("click", clickFn);
         };
       }
     }, [showModal]);
