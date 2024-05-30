@@ -15,7 +15,7 @@ import PostOwnerLeftSide from "./PostOwnerLeftSide";
 import useSelector from "../../../hooks/useSelector";
 // rtk_query
 import {
-  useDeletePostMutation,
+  // useDeletePostMutation,
   useEditPostMutation,
 } from "../../../store/api/api";
 
@@ -57,16 +57,16 @@ const Owner = ({
 
   const { type } = ownerType;
 
-  const [
-    deletePost,
-    {
-      isLoading: deleteLoading,
-      isError: deleteError,
-      isSuccess: deleteSuccess,
-      status: deleteStatus,
-      error: deleteErrorData,
-    },
-  ] = useDeletePostMutation();
+  // const [
+  //   deletePost,
+  //   {
+  //     isLoading: deleteLoading,
+  //     isError: deleteError,
+  //     isSuccess: deleteSuccess,
+  //     status: deleteStatus,
+  //     error: deleteErrorData,
+  //   },
+  // ] = useDeletePostMutation();
 
   const [
     editPost,
@@ -79,7 +79,7 @@ const Owner = ({
     },
   ] = useEditPostMutation();
 
-  const handleDeletePost = () => deletePost(ownerId);
+  // const handleDeletePost = () => deletePost(ownerId);
 
   const submitPostChanges = () => {
     const form = modalRef.current?.form();
@@ -112,27 +112,27 @@ const Owner = ({
     }
   };
 
-  useEffect(() => {
-    if (deleteStatus !== "uninitialized") {
-      if (deleteError) {
-        const errorObj = (
-          deleteErrorData as Record<string, Record<string, string>>
-        ).data;
+  // useEffect(() => {
+  //   if (deleteStatus !== "uninitialized") {
+  //     if (deleteError) {
+  //       const errorObj = (
+  //         deleteErrorData as Record<string, Record<string, string>>
+  //       ).data;
 
-        messageRef?.showMessage({
-          content: errorObj.error_message || errorObj.message,
-          clr: "red",
-          time: 3000,
-        });
-      } else if (deleteSuccess) {
-        messageRef?.showMessage({
-          content: "post deleted",
-          clr: "green",
-          time: 3000,
-        });
-      }
-    }
-  }, [deleteStatus, deleteError, deleteSuccess, deleteErrorData, messageRef]);
+  //       messageRef?.showMessage({
+  //         content: errorObj.error_message || errorObj.message,
+  //         clr: "red",
+  //         time: 3000,
+  //       });
+  //     } else if (deleteSuccess) {
+  //       messageRef?.showMessage({
+  //         content: "post deleted",
+  //         clr: "green",
+  //         time: 3000,
+  //       });
+  //     }
+  //   }
+  // }, [deleteStatus, deleteError, deleteSuccess, deleteErrorData, messageRef]);
 
   useEffect(() => {
     if (editStatus !== "uninitialized") {
@@ -214,9 +214,9 @@ const Owner = ({
 
         {type === "comment" || !user || user.id !== ownerId ? null : (
           <div className="d-flex gap-2 align-items-center post-owner-right-side-btns-holder flex-wrap">
-            <button onClick={handleDeletePost} className="btn btn-danger">
+            {/* <button onClick={handleDeletePost} className="btn btn-danger">
               {deleteLoading ? "Loading..." : "delete"}
-            </button>
+            </button> */}
 
             <button
               className="btn btn-success"
